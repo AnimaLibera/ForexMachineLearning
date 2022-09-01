@@ -1,0 +1,3 @@
+Module Portfolio: Apply Threshould for TP And SL for every Asset (Maybe Dictonary: {"EURUSD": (TP, SL), "GBPUSW": (TP, SL)}
+Module MarketAnalysis: Percentale 90 % for positiv Return, Percentale 90 % for absolute negativ Return
+Mduke MarketAnalysis: Check for: Stationary Non-Stationary, Random Non-Random, Independece Dependence 
