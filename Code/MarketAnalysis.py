@@ -1,8 +1,8 @@
-# Createdt		2022-04-03
-# Updated		2022-09-01
+# Created		2022-04-03
+# Updated		2022-09-02
 # Autor Nickname	AnimaLibera
 # Autor RealName	Gianni-Lauritz Grubert
-# Legal			All Rights Reserved
+# Legal			Read only Policy
 
 # Imports
 import pandas as pd
@@ -81,7 +81,7 @@ def GeneralAnalysis():
 		df = pd.DataFrame()
 		
 		for folder in listFolders:
-			df = pd.concat([df, LoadData(name, timeFrame, folder)])
+			df = pd.concat([df, LoadData(name, folder, timeFrame)])
 		
 		df["Return"] = df["close"].pct_change(1).fillna(0)
 		
@@ -115,7 +115,7 @@ def Choice():
 		argument = sys.argv[1]
 	
 	if argument in ["GeneralAnalysis", "GA", "1"]:
-		GeneralAnalysis().to_html("./Presentation/General Analysis.html")
+		GeneralAnalysis().to_html("../Presentation/General Analysis.html")
 		print("Finisched General Analysis!")
 		print("Saved Result unter Presentation!")
 	else:

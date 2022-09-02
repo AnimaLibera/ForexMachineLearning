@@ -1,9 +1,8 @@
-# Createdt		2022-03-20
-# Updated		2022-09-01
+# Created		2022-03-20
+# Updated		2022-09-02
 # Autor Nickname	AnimaLibera
 # Autor RealName	Gianni-Lauritz Grubert
-# Legal			All Rights Reserved
-
+# Legal			Read only Policy
 # Imports
 import numpy as np
 import pandas as pd
@@ -14,8 +13,8 @@ from sklearn.preprocessing import StandardScaler
 def ExtractStringDate(date):
 	return str(date)[0:10]
 
-def LoadData(name, timeFrame = "Daily", folder = "Data"):
-	df = pd.read_csv(f"./{folder}/{name}_{timeFrame}.csv", delimiter="\t", index_col="<DATE>", parse_dates=True)
+def LoadData(name, folder, timeFrame = "Daily"):
+	df = pd.read_csv(f"../Data/{folder}/{name}_{timeFrame}.csv", delimiter="\t", index_col="<DATE>", parse_dates=True)
 	
 	if timeFrame == "Daily":
 		df = df.iloc[:,:-2]

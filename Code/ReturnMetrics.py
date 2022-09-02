@@ -87,8 +87,8 @@ def SortinoRatio(returnSeries, timeFrame = "Daily"):
 	
 	return sortinoRatio
 
-def Beta(returnSeries, timeFrame = "Daily", folder = "Data"):
-	df = LoadData("SP500", timeFrame, folder)
+def Beta(returnSeries, folder = "SP500", timeFrame = "Daily"):
+	df = LoadData("SP500", folder, timeFrame)
 	benchmarkSeries = df["close"].pct_change(1)
 	benchmarkSeries.name = "Return SP500"
 	
@@ -104,8 +104,8 @@ def Beta(returnSeries, timeFrame = "Daily", folder = "Data"):
 	
 	return beta
 	
-def Alpha(returnSeries, timeFrame = "Daily", folder = "Data"):
-	df = LoadData("SP500", timeFrame, folder)
+def Alpha(returnSeries, folder = "SP500", timeFrame = "Daily"):
+	df = LoadData("SP500", folder, timeFrame)
 	benchmarkSeries = df["close"].pct_change(1)
 	benchmarkSeries.name = "Return SP500"
 	
@@ -116,7 +116,7 @@ def Alpha(returnSeries, timeFrame = "Daily", folder = "Data"):
 	
 	meanReturn = returnSeries.mean() * annualBars
 	meanBenchmark = benchmarkSeries.mean() * annualBars
-	beta = Beta(returnSeries, timeFrame, folder)
+	beta = Beta(returnSeries, folder, timeFrame)
 	
 	alpha = (meanReturn - beta * meanBenchmark) * 100
 	
@@ -165,7 +165,7 @@ def Edge(returnSeries):
 	
 	return edge
 	
-def ShortDescribtion(returnSeries, timeFrame = "Daily", folder = "Data"):
+def ShortDescribtion(returnSeries, folder, timeFrame = "Daily"):
 	message = (f"Actual Return:\t\t\t{'%.2f' % ActualReturn(returnSeries)} %\n")
 	message += (f"Annualized Return:\t\t{'%.2f' % AnnualizedReturn(returnSeries, timeFrame)} % p.a.\n")
 	message +=(f"Maximum Relativ Drawdown:\t{'%.2f' % MaximumRelativDrawdown(returnSeries)} %\n")
@@ -173,15 +173,16 @@ def ShortDescribtion(returnSeries, timeFrame = "Daily", folder = "Data"):
 	
 	return message
 
-def LongDescribtion(returnSeries, timeFrame = "Daily", folder = "Data", SP500 = True):
+def LongDescribtion(returnSeries, folder, timeFrame = "Daily", SP500 = True):
 	message = (f"Actual Return:\t\t\t{'%.2f' % ActualReturn(returnSeries)} %\n")
 	message += (f"Annualized Return:\t\t{'%.2f' % AnnualizedReturn(returnSeries, timeFrame)} % p.a.\n")
 	message += (f"Maximum Relativ Drawdown:\t{'%.2f' % MaximumRelativDrawdown(returnSeries)} %\n")
 	message += (f"Performance:\t\t\t{'%.2f' % Performance(returnSeries, timeFrame)}\n")
 	
 	if SP500 == True:
-		message += (f"Alpha SP500:\t\t\t{'%.2f' % Alpha(returnSeries, timeFrame, folder)}\n")
-		message += (f"Beta SP500:\t\t\t{'%.3f' % Beta(returnSeries, timeFrame, folder)}\n")
+		SP500Folder = "SP500"
+		message += (f"Alpha SP500:\t\t\t{'%.2f' % Alpha(returnSeries, SP500Folder, timeFrame)}\n")
+		message += (f"Beta SP500:\t\t\t{'%.3f' % Beta(returnSeries, SP500Folder, timeFrame)}\n")
 		
 	message += (f"Annualized Sortino Ratio:\t{'%.3f' % SortinoRatio(returnSeries, timeFrame)}\n")
 	message += (f"Risk-Reward-Ratio:\t\t{'%.2f' % RiskRewardRatio(returnSeries)}\n")
@@ -193,14 +194,15 @@ def LongDescribtion(returnSeries, timeFrame = "Daily", folder = "Data", SP500 = 
 	
 	return message
 
-def TableDesciption(returnSeries, name = "Default", timeFrame = "Daily", folder = "Data", SP500 = True):
+def TableDesciption(returnSeries, folder, name = "Default", timeFrame = "Daily", SP500 = True):
 	index = ["Actual Return", "Annualized Return", "Maximum Relativ Drawdown", "Performance"]
 	values = [f"{'%.2f' % ActualReturn(returnSeries)} %", f"{'%.2f' % AnnualizedReturn(returnSeries, timeFrame)} % p.a."]
 	values += [f"{'%.2f' % MaximumRelativDrawdown(returnSeries)} %", f"{'%.2f' % Performance(returnSeries, timeFrame)}"]
 	
 	if SP500 == True:
+		SP500Folder = "SP500"
 		index += ["Alpha SP500", "Beta SP500"]
-		values += [f"{'%.2f' % Alpha(returnSeries, timeFrame, folder)}", f"{'%.3f' % Beta(returnSeries, timeFrame, folder)}"]
+		values += [f"{'%.2f' % Alpha(returnSeries, SP500Folder, timeFrame)}", f"{'%.3f' % Beta(returnSeries, SP500Folder, timeFrame)}"]
 	
 	index += ["Annualized Sortino Ratio", "Risk-Reward-Ratio", "WinRate", "LossRate", "Expectancy", "Edge", "Number of Trades / Bars"]
 	values += [f"{'%.3f' % SortinoRatio(returnSeries, timeFrame)}", f"{'%.2f' % RiskRewardRatio(returnSeries)}"]

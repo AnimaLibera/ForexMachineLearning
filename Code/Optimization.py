@@ -1,8 +1,8 @@
-# Createdt			2022-04-02
-# Updated			2022-04-02
+# Created		2022-04-02
+# Updated		2022-09-02
 # Autor Nickname	AnimaLibera
 # Autor RealName	Gianni-Lauritz Grubert
-# Legal				All Rights Reserved
+# Legal			Read only Policy
 
 # Imports
 import pandas as pd

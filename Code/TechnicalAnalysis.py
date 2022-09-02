@@ -1,8 +1,8 @@
-# Createdt			2022-03-18
-# Updated			2022-04-03
+# Created		2022-03-18
+# Updated		2022-04-03
 # Autor Nickname	AnimaLibera
 # Autor RealName	Gianni-Lauritz Grubert
-# Legal				All Rights Reserved
+# Legal			Read only Policy
 
 # Imports
 import pandas as pd
@@ -37,8 +37,8 @@ def AverageDirectinalMovementIndex(high, low, close):
 	
 	return ADX
 		
-def TechnicalAnalysisFeatures(name, timeFrame = "Daily", folder = "Data", setting = "RELVOL-KAMA"):
-	df = LoadData(name, timeFrame, folder)
+def TechnicalAnalysisFeatures(name, folder, timeFrame = "Daily", setting = "RELVOL-KAMA"):
+	df = LoadData(name, folder, timeFrame)
 	
 	relativeVolume = RelativeVolume(df["volume"])
 	onBalanceVolume = ta.volume.OnBalanceVolumeIndicator(close = df["close"], volume = df["volume"], fillna = True).on_balance_volume()

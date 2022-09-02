@@ -1,8 +1,8 @@
-# Createdt			2022-04-02
-# Updated			2022-04-04
+# Created		2022-04-02
+# Updated		2022-09-02
 # Autor Nickname	AnimaLibera
 # Autor RealName	Gianni-Lauritz Grubert
-# Legal				All Rights Reserved
+# Legal			Read only Policy
 
 # Imports
 import pandas as pd
@@ -66,12 +66,12 @@ def MaximumLoss(df):
 	
 	return maximumLoss
 	
-def HandleData(name, timeFrame = "Daily", folder = "Data", output = "Full", setting = "RELVOL-KAMA", spread = True, model = "SupportVectorMachineRegressor", splitPercentage = 0.8, optimize = False):
-	df = LoadData(name, timeFrame, folder)
+def HandleData(name, folder, timeFrame = "Daily", output = "Full", setting = "RELVOL-KAMA", spread = True, model = "SupportVectorMachineRegressor", splitPercentage = 0.8, optimize = False):
+	df = LoadData(name, folder, timeFrame)
 	
 	#Shift(1) Features because Return is Lagging(1)
 	#FillNa(0) is a workaround to have same Length Data
-	features = TA.TechnicalAnalysisFeatures(name, timeFrame, folder, setting).shift(1).fillna(0)
+	features = TA.TechnicalAnalysisFeatures(name, folder, timeFrame, setting).shift(1).fillna(0)
 	#features = ta.add_all_ta_features(df, open="open", high="high", low="low", close="close", volume="volume", fillna=True).shift(1).fillna(0)
 	
 	#Preprocess Data
@@ -158,7 +158,7 @@ def OptimizationPortfolio():
 		
 		for folder in listFolders:
 			
-			returnTuple = HandleData(name, timeFrame, folder, output, setting, spread, model, splitPercentage)
+			returnTuple = HandleData(name, folder, timeFrame, output, setting, spread, model, splitPercentage)
 			returnSeries = pd.concat([returnSeries,returnTuple[0]]) #Get Element returnSeries from Tuple
 			maximumProfit = pd.concat([maximumProfit,returnTuple[1]]) #Get Element maximumProfit from Tuple
 			maximumLoss = pd.concat([maximumLoss,returnTuple[2]]) #Get Element maximumLoss from Tuple
@@ -186,8 +186,8 @@ def SingleAsset(name = "EURUSD", folder = "Major Daily 2021"):
 	df = pd.DataFrame()
 	market = pd.DataFrame()
 	
-	df[f"Return {name}"] = HandleData(name, timeFrame, folder, output, setting, spread, model)[0] # Get Element returnSeries of Tuple
-	market[f"Return {name}"] = LoadData(name, timeFrame, folder)["close"].pct_change(1).fillna(0)
+	df[f"Return {name}"] = HandleData(name, folder, timeFrame, output, setting, spread, model)[0] # Get Element returnSeries of Tuple
+	market[f"Return {name}"] = LoadData(name, folder, timeFrame)["close"].pct_change(1).fillna(0)
 		
 	df[f"Return {name}"] = df[f"Return {name}"] * leverage
 	market[f"Return {name}"] = market[f"Return {name}"] * leverage
@@ -207,7 +207,7 @@ def Portfolio(folder = "Major Daily 2021"):
 	modelList = ["SupportVectorMachineRegressor", "DecisionTreeRegressor", "RandomForestRegressor"]
 	timeFrame = "Daily"
 	setting = settingsList[1]
-	SP500 = False
+	SP500 = True
 	output = "Test"
 	drawdownBreakAssets = False
 	breakDrawdownPortfolio = False
@@ -220,8 +220,8 @@ def Portfolio(folder = "Major Daily 2021"):
 	market = pd.DataFrame()
 	
 	for name in majorCurrencyPairs:
-		df[f"Return {name}"] = HandleData(name, timeFrame, folder, output, setting, spread, model)[0] # Get Element returnSeries of Tuple
-		market[f"Return {name}"] = LoadData(name, timeFrame, folder)["close"].pct_change(1).fillna(0)
+		df[f"Return {name}"] = HandleData(name, folder, timeFrame, output, setting, spread, model)[0] # Get Element returnSeries of Tuple
+		market[f"Return {name}"] = LoadData(name, folder, timeFrame)["close"].pct_change(1).fillna(0)
 		
 		df[f"Return {name}"] = df[f"Return {name}"] * leverage
 		market[f"Return {name}"] = market[f"Return {name}"] * leverage
@@ -244,7 +244,7 @@ def Portfolio(folder = "Major Daily 2021"):
 	#print(RM.ShortDescribtion(market["Return Market"], timeFrame, folder))
 	
 	#Get Metrics of Portfolio
-	return (RM.TableDesciption(df["Return Portfolio"], folder, timeFrame, folder, SP500))
+	return (RM.TableDesciption(df["Return Portfolio"], name, folder, timeFrame, SP500))
 	
 	#Show all Returns (Portfolio + Assets)
 	#fig, axs = plt.subplots(3)
