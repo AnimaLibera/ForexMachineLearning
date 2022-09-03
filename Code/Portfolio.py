@@ -22,7 +22,6 @@ warnings.filterwarnings("ignore")
 
 def AverageSpread(closeSeries, name):
 	#Source: GlobalPrime
-	"AUDUSD", "EURUSD", "GBPUSD", "USDCAD", "USDCHF", "USDJPY"
 	spreadDictionary = {"AUDUSD": 0.000028,"EURUSD": 0.000016, "GBPUSD": 0.000075, "USDCAD": 0.000067, "USDCHF": 0.000073, "USDJPY": 0.0039}
 	
 	spreadPercentage = 1 - ((closeSeries - spreadDictionary[name]) / closeSeries)

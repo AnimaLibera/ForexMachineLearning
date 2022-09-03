@@ -8,11 +8,11 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import Code.ReturnMetrics as rm
+import Code.ReturnMetrics as RM
 from Code.Data import LoadData
 	
 def SimpleMovingAverage(name):
-	df = LoadData(name)
+	df = LoadData(name, "Major Daily 2011-2021")
 	df["SMA"] = df["open"].rolling(20).mean()
 	df["Previous SMA"] = df["SMA"].shift(1)
 	
@@ -43,7 +43,7 @@ def SimpleMovingAverage(name):
 	return df["Return"]
 
 def Portfolio():
-	namesList = ["EURUSD", "USDJPY"]
+	namesList = ["AUDUSD", "EURUSD", "GBPUSD", "USDCAD", "USDCHF", "USDJPY"]
 	
 	#Empty DataFrame
 	df = pd.DataFrame()
@@ -53,14 +53,11 @@ def Portfolio():
 	
 	df["Return Portfolio"] = df.sum(axis=1)
 	
-	#Show all Returns (Portfolio + Assets)
-	#df.cumsum().plot()
-	#plt.show()
-	
-	return(df["Return Portfolio"])
+	return RM.TableDesciption(df["Return Portfolio"], "", "SMA")
 
-portfolioReturn = Portfolio()
-rm.Describe(portfolioReturn)
+def Choice():
+	Portfolio().to_html("./Presentation/Simple Moving Average Strategie.html")
+	print("Finisched calculate Simple Moving Average Strategie")
 
-#portfolioReturn.cumsum().plot()
-#plt.show()
+if __name__ == "__main__":
+	Choice()

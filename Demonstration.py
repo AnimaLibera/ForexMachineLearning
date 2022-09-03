@@ -7,6 +7,7 @@
 #Imports
 import Code.MarketAnalysis as MA
 import Code.Portfolio as PF
+import Code.SimpleStrategy as SS
 
 #Running
 MA.Choice("GeneralAnalysis")
@@ -14,3 +15,4 @@ PF.Choice("SingleAsset")
 PF.Choice("Portfolio")
 PF.Choice("MultiPortfolio")
 PF.Choice("OptimizationPortfolio")
+SS.Choice()
