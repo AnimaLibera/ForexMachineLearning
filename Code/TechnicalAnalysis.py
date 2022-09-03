@@ -1,5 +1,5 @@
 # Created		2022-03-18
-# Updated		2022-04-03
+# Updated		2022-09-03
 # Autor Nickname	AnimaLibera
 # Autor RealName	Gianni-Lauritz Grubert
 # Legal			Read only Policy
@@ -8,7 +8,7 @@
 import pandas as pd
 import ta as ta
 import matplotlib.pyplot as plt
-from Data import LoadData
+from Code.Data import LoadData
 
 def RelativeVolume(volume, window=20):
 	meanVolume = volume.rolling(window).mean()

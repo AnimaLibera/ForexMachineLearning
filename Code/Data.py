@@ -3,6 +3,7 @@
 # Autor Nickname	AnimaLibera
 # Autor RealName	Gianni-Lauritz Grubert
 # Legal			Read only Policy
+
 # Imports
 import numpy as np
 import pandas as pd
@@ -14,7 +15,7 @@ def ExtractStringDate(date):
 	return str(date)[0:10]
 
 def LoadData(name, folder, timeFrame = "Daily"):
-	df = pd.read_csv(f"../Data/{folder}/{name}_{timeFrame}.csv", delimiter="\t", index_col="<DATE>", parse_dates=True)
+	df = pd.read_csv(f"./Data/{folder}/{name}_{timeFrame}.csv", delimiter="\t", index_col="<DATE>", parse_dates=True)
 	
 	if timeFrame == "Daily":
 		df = df.iloc[:,:-2]

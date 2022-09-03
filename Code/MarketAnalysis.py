@@ -9,8 +9,8 @@ import pandas as pd
 import numpy as np
 import warnings
 import sys
-import TechnicalAnalysis as TA
-from Data import LoadData
+import Code.TechnicalAnalysis as TA
+from Code.Data import LoadData
 
 warnings.filterwarnings("ignore")
 
@@ -108,15 +108,13 @@ def GeneralAnalysis():
 	
 	return analysis
 
-def Choice():
-	
-	argument = "GeneralAnalysis" # Default Argument
+def Choice(argument = "GeneralAnalysis"):
 	
 	if len(sys.argv) > 1:
 		argument = sys.argv[1]
 	
 	if argument in ["GeneralAnalysis", "GA", "1"]:
-		GeneralAnalysis().to_html("../Presentation/General Analysis.html")
+		GeneralAnalysis().to_html("./Presentation/General Analysis.html")
 		print("Finisched General Analysis!")
 		print("Saved Result unter Presentation!")
 	else:

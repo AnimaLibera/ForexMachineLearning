@@ -1,13 +1,13 @@
-# Created			2022-03-16
-# Update 			2022-04-01
+# Created		2022-03-16
+# Update 		2022-09-03
 # Autor Nickname	AnimaLibera
 # Autor RealName	Gianni-Lauritz Grubert
-# Legal				All Rights Reserved
+# Legal			Read only Policy
 
 # Imports
 import numpy as np
 import pandas as pd
-from Data import LoadData
+from Code.Data import LoadData
 
 sampleReturn = pd.Series([-0.01,0.02,0.04,0.02,-0.03,-0.01,-0.05,0.04])
 
@@ -194,7 +194,7 @@ def LongDescribtion(returnSeries, folder, timeFrame = "Daily", SP500 = True):
 	
 	return message
 
-def TableDesciption(returnSeries, folder, name = "Default", timeFrame = "Daily", SP500 = True):
+def TableDesciption(returnSeries, folder, name, timeFrame = "Daily", SP500 = True):
 	index = ["Actual Return", "Annualized Return", "Maximum Relativ Drawdown", "Performance"]
 	values = [f"{'%.2f' % ActualReturn(returnSeries)} %", f"{'%.2f' % AnnualizedReturn(returnSeries, timeFrame)} % p.a."]
 	values += [f"{'%.2f' % MaximumRelativDrawdown(returnSeries)} %", f"{'%.2f' % Performance(returnSeries, timeFrame)}"]
@@ -209,7 +209,9 @@ def TableDesciption(returnSeries, folder, name = "Default", timeFrame = "Daily",
 	values += [f"{'%.2f' % WinRate(returnSeries)} %", f"{'%.2f' % LossRate(returnSeries)} %"]
 	values += [f"{'%.4f' % Expectancy(returnSeries)} %", f"{'%.2f' % Edge(returnSeries)} %"]
 	values += [f"{len(returnSeries)}"]
-		
+	
+	#print(namesList)
+	
 	df = pd.DataFrame(data = values, index = index, columns = [name])
 	df = df.transpose()
 	#df.style.set_properties(**{'text-align': 'left'})

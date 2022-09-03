@@ -1,5 +1,5 @@
 # Created		2022-04-02
-# Updated		2022-09-02
+# Updated		2022-09-03
 # Autor Nickname	AnimaLibera
 # Autor RealName	Gianni-Lauritz Grubert
 # Legal			Read only Policy
@@ -7,7 +7,7 @@
 # Imports
 import pandas as pd
 import numpy as np
-import ReturnMetrics as RM
+import Code.ReturnMetrics as RM
 from scipy.optimize import minimize
 
 def TakeProfit(returnSeries, maximumProfit, threshold = 0.005):

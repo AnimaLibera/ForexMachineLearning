@@ -1,15 +1,15 @@
-# Createdt			2022-03-16
-# Updated			2022-03-20
+# Created		2022-03-16
+# Updated		2022-03-20
 # Autor Nickname	AnimaLibera
 # Autor RealName	Gianni-Lauritz Grubert
-# Legal				All Rights Reserved
+# Legal			Red onyl Policy
 
 # Imports
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import ReturnMetrics as rm
-from Data import LoadData
+import Code.ReturnMetrics as rm
+from Code.Data import LoadData
 	
 def SimpleMovingAverage(name):
 	df = LoadData(name)

@@ -8,15 +8,15 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import TechnicalAnalysis as TA
+import Code.TechnicalAnalysis as TA
 import ta as ta
 import warnings
 import sys
-import ReturnMetrics as RM
-import MachineLearning as ML
-import Optimization as OM
-from Data import LoadData, PreprocessData
-from MarketAnalysis import PrettyPercentage
+import Code.ReturnMetrics as RM
+import Code.MachineLearning as ML
+import Code.Optimization as OM
+from Code.Data import LoadData, PreprocessData
+from Code.MarketAnalysis import PrettyPercentage
 
 warnings.filterwarnings("ignore")
 
@@ -204,7 +204,7 @@ def SingleAsset(name = "EURUSD", folder = "Major Daily 2021"):
 		df[f"Return {name}"] = DrawdownBreak(df[f"Return {name}"], 0.01)
 	
 	#Get Metrics of Asset
-	tableDescritpion = RM.TableDesciption(df[f"Return {name}"], (name + " " + folder), folder, timeFrame, SP500)
+	tableDescritpion = RM.TableDesciption(df[f"Return {name}"], folder, (name + " " + folder), timeFrame, SP500)
 	
 	return tableDescritpion
 			
@@ -252,7 +252,7 @@ def Portfolio(folder = "Major Daily 2021"):
 	#print(RM.ShortDescribtion(market["Return Market"], timeFrame, folder))
 	
 	#Get Metrics of Portfolio
-	return (RM.TableDesciption(df["Return Portfolio"], name, folder, timeFrame, SP500))
+	return (RM.TableDesciption(df["Return Portfolio"], folder, folder, timeFrame, SP500))
 	
 	#Show all Returns (Portfolio + Assets)
 	#fig, axs = plt.subplots(3)
@@ -271,26 +271,24 @@ def MultiPortfolio():
 	for folder in listFolders:
 		tablePortfolios = pd.concat([tablePortfolios, Portfolio(folder)], axis = 0)
 	
-	tablePortfolios.to_html("Table Portfolios.html")
+	return tablePortfolios
 
-def Choice():
-	
-	argument = "SingleAsset" # Default Argument
+def Choice(argument = "SingleAsset"):
 	
 	if len(sys.argv) > 1:
 		argument = sys.argv[1]
 	
 	if argument in ["SingleAsset", "SA", "1"]:
-		SingleAsset("EURUSD").to_html("../Presentation/Table Asset.html")
+		SingleAsset("EURUSD").to_html("./Presentation/Table Asset.html")
 		print("Finished calculating SingleAsset!")
 	elif argument in ["Portfolio", "PF", "2"]:
-		Portfolio().to_html("../Presentation/Single Portfolio.html")
+		Portfolio().to_html("./Presentation/Single Portfolio.html")
 		print("Finished calculating single Portfolio!")
 	elif argument in ["MultiPortfolio", "MP", "3"]:
-		MultiPortfolio().to_html("../Presentation/Multi Portfolio.html")
+		MultiPortfolio().to_html("./Presentation/Multi Portfolio.html")
 		print("Finished calculating Multiportfolio!")
 	elif argument in ["OptimizationPortfolio", "OP", "4"]:
-		OptimizationPortfolio().to_html("../Presentation/Optimization Portfolio.html")
+		OptimizationPortfolio().to_html("./Presentation/Optimization Portfolio.html")
 		print("Finished calculating OptimizationPortfolio!")
 	else:
 		print(f"Argument \"{argument}\" not supported!")
