@@ -1,5 +1,5 @@
 # Created		2022-04-03
-# Updated		2022-09-02
+# Updated		2022-09-03
 # Autor Nickname	AnimaLibera
 # Autor RealName	Gianni-Lauritz Grubert
 # Legal			Read only Policy
@@ -100,9 +100,10 @@ def GeneralAnalysis():
 	negativMean = negativMean.apply(PrettyPercentage, args = (True,))
 	positivBars = positivBars.apply(PrettyPercentage, args = (True,))
 	negativBars = negativBars.apply(PrettyPercentage, args = (True,))
+	totalBars = pd.Series(data = df.shape[0], index=majorCurrencyPairs, name = "Total Bars")
 	
 	analysis = pd.DataFrame(data = [trending, ranging, standardDeviation, annualVolatility, overallMean, positivMean, \
-									negativMean, positivBars, negativBars])
+									negativMean, positivBars, negativBars, totalBars])
 	analysis = analysis.transpose()
 	
 	return analysis

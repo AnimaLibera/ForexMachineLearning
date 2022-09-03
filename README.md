@@ -1,0 +1,1 @@
+Most of the Calculation is done on the 20 % Testdataset with 52 Bars.

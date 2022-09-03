@@ -1,5 +1,5 @@
 # Created		2022-04-02
-# Updated		2022-09-02
+# Updated		2022-09-03
 # Autor Nickname	AnimaLibera
 # Autor RealName	Gianni-Lauritz Grubert
 # Legal			Read only Policy
@@ -16,6 +16,7 @@ import ReturnMetrics as RM
 import MachineLearning as ML
 import Optimization as OM
 from Data import LoadData, PreprocessData
+from MarketAnalysis import PrettyPercentage
 
 warnings.filterwarnings("ignore")
 
@@ -121,7 +122,7 @@ def HandleData(name, folder, timeFrame = "Daily", output = "Full", setting = "RE
 		returnSeries = df["Return"].iloc[split:]
 		maximumProfit = df["Max Profit"].iloc[split:]
 		maximumLoss = df["Max Loss"].iloc[split:]
-	
+
 	return (returnSeries, maximumProfit, maximumLoss)
 
 def DrawdownBreak(returnSeries, threshold = 0.01):
@@ -131,6 +132,9 @@ def DrawdownBreak(returnSeries, threshold = 0.01):
 	returnSeries.loc[drawdownSeries.shift(1) >= threshold] = 0
 	
 	return returnSeries
+
+def NicePercentage(value):
+	return PrettyPercentage(value, True, 2)
 
 def OptimizationPortfolio():
 	listFolders = ["Major Daily 2021", "Major Daily 2020", "Major Daily 2019", "Major Daily 2018", "Major Daily 2017", "Major Daily 2016", \
@@ -166,7 +170,11 @@ def OptimizationPortfolio():
 		portfolio[f"Sortino Ratio TP {name}"] = OM.FindBestTakeProfit(returnSeries, maximumProfit, timeFrame)
 		portfolio[f"Sortino Ratio SL {name}"] = OM.FindBestStopLoss(returnSeries, maximumLoss, timeFrame)
 	
-	portfolio.to_html("Optimization Portfolio.html")
+	portfolio.index = portfolio.index.map(NicePercentage)
+	
+	portfolio = portfolio.transpose()
+
+	return portfolio
 
 def SingleAsset(name = "EURUSD", folder = "Major Daily 2021"):
 	#Setting Options
@@ -196,9 +204,9 @@ def SingleAsset(name = "EURUSD", folder = "Major Daily 2021"):
 		df[f"Return {name}"] = DrawdownBreak(df[f"Return {name}"], 0.01)
 	
 	#Get Metrics of Asset
-	tableDescritpion = RM.TableDesciption(df[f"Return {name}"], (name + " " + folder), timeFrame, folder, SP500)
+	tableDescritpion = RM.TableDesciption(df[f"Return {name}"], (name + " " + folder), folder, timeFrame, SP500)
 	
-	tableDescritpion.to_html("Table Asset.html")
+	return tableDescritpion
 			
 def Portfolio(folder = "Major Daily 2021"):
 	# Source: GlobalPrime
@@ -231,7 +239,7 @@ def Portfolio(folder = "Major Daily 2021"):
 		
 		#print(f"Drawdown {name}: {'%.2f' % RM.MaximumRelativDrawdown(df[f'Return {name}'])}")
 	
-	# Assets ar Equal Weighted
+	# Assets are Equal Weighted
 	df["Return Portfolio"] = df.sum(axis=1) / df.shape[1] # Summation and Number of Columns
 	market["Return Market"] = market.sum(axis=1) / market.shape[1]
 	
@@ -273,13 +281,16 @@ def Choice():
 		argument = sys.argv[1]
 	
 	if argument in ["SingleAsset", "SA", "1"]:
-		SingleAsset("EURUSD")
+		SingleAsset("EURUSD").to_html("../Presentation/Table Asset.html")
 		print("Finished calculating SingleAsset!")
-	elif argument in ["MultiPortfolio", "MP", "2"]:
-		MultiPortfolio()
+	elif argument in ["Portfolio", "PF", "2"]:
+		Portfolio().to_html("../Presentation/Single Portfolio.html")
+		print("Finished calculating single Portfolio!")
+	elif argument in ["MultiPortfolio", "MP", "3"]:
+		MultiPortfolio().to_html("../Presentation/Multi Portfolio.html")
 		print("Finished calculating Multiportfolio!")
-	elif argument in ["OptimizationPortfolio", "OP", "3"]:
-		OptimizationPortfolio()
+	elif argument in ["OptimizationPortfolio", "OP", "4"]:
+		OptimizationPortfolio().to_html("../Presentation/Optimization Portfolio.html")
 		print("Finished calculating OptimizationPortfolio!")
 	else:
 		print(f"Argument \"{argument}\" not supported!")
